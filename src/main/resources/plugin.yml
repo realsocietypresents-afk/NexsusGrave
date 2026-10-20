@@ -1,0 +1,28 @@
+name: NexusGrave
+version: ${project.version}
+main: com.nexuscraft.nexusgrave.NexusGravePlugin
+api-version: '1.21'
+# Load after the spawn-protection plugin so this plugin's grave-click handler runs after its
+# MONITOR override (see GraveInteractListener).
+softdepend: [NexusSpawnShield]
+author: RealSociety
+description: "A massive overhaul of player death. Instead of vanilla's blind random item-scatter, every death seals its drops and XP into a real, physical, persistent grave at the death location. A pre-writable epitaph is shown to anyone who reads it, defaulting to vanilla's own real death message. Graves really decay across four condition tiers and eventually collapse for good -- unless an earned permanence rite (a consumed Nether Star) is paid for in advance. A real corpse run applies a real slowness/weakness debuff and a real compass bound to your most recent grave. And grave robbing is real: nothing stops another player (or a mob) from finding and looting your grave before you get back to it."
+
+commands:
+  nexusgrave:
+    description: Manage NexusGrave -- pre-write your epitaph, list or find your graves, or reload config.
+    usage: /nexusgrave <epitaph <text>|clearepitaph|find|retrieve|list|reload>
+    aliases: [grave, nexgrave, graves]
+    permission: nexusgrave.use
+    permission-message: "§cYou don't have permission to do that."
+
+permissions:
+  nexusgrave.admin:
+    description: Reload NexusGrave's config.
+    default: op
+  nexusgrave.staff:
+    description: Open anyone's grave and break an active grave marker. Owners can always open their own.
+    default: op
+  nexusgrave.use:
+    description: Pre-write your epitaph, and list/find your own graves.
+    default: true

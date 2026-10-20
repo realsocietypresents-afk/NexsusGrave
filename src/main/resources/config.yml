@@ -1,0 +1,64 @@
+# NexusGrave -- a massive overhaul of player death.
+#
+# Every death still happens exactly like vanilla -- this plugin only changes what happens to the
+# drops and XP afterward. Fixed shapes (the four condition tiers, the corpse-run debuff's own
+# two-effect makeup) stay in code; the shared numbers below are here, same "shared numbers in
+# config, fixed shapes in code" split this whole family already uses.
+
+enabled: true
+
+decay:
+  # How often (real minutes) every registered, non-permanent, unclaimed grave loses decay.
+  interval-minutes: 45
+  # How much decay is lost per interval. At the defaults below, an unclaimed, non-permanent grave
+  # collapses for good after 100.0 / 2.5 = 40 intervals (30 real hours).
+  amount-per-interval: 2.5
+
+rite:
+  # The real, consumable "rite of passage" item -- right-click your own fresh grave while holding
+  # one to make THAT grave permanently immune to decay/collapse. Deliberately NOT
+  # TOTEM_OF_UNDYING (see this project's own Material stub comment for why); an earned cost, not a
+  # free pass, and it never protects a grave from being looted by anyone else.
+  permanence-item: NETHER_STAR
+
+corpse-run:
+  # How often (real seconds) the slowness/weakness debuff is refreshed and the compass target is
+  # re-checked for every online player with an active (unclaimed, uncollapsed) grave.
+  tick-interval-seconds: 10
+  # Duration (real ticks) each refresh applies the debuff for -- kept longer than the tick
+  # interval above so a brief lag spike never lets it lapse before the next refresh.
+  debuff-duration-ticks: 260
+  slowness-amplifier: 1
+  weakness-amplifier: 0
+
+menu:
+  title: "Grave Contents"
+
+epitaph:
+  prompt-prefix: "Epitaph set for your next grave: "
+  # Longest a pre-written epitaph is allowed to be; anything past this is trimmed when it's set,
+  # not when it's finally read.
+  max-length: 96
+
+placement:
+  # A grave only goes into EMPTY space (air, water, lava, tall grass and similar). If the death
+  # block or the one above it is solid -- a wall, a floor, a protected spawn build -- the grave is
+  # moved to the nearest free spot within this many blocks sideways / up-down (hard caps 16 / 8).
+  # If nothing nearby is free, no grave is made and the items drop normally instead.
+  search-radius: 4
+  search-vertical: 3
+
+notify:
+  # On respawn, tell the player where their grave is and how far away it is.
+  on-respawn: true
+
+access:
+  # Only the grave's owner (and staff with nexusgrave.staff, which ops have by default) can open
+  # it. Set false to bring back open grave robbing, where any player can loot any grave.
+  owner-only: true
+  # An active grave's marker (cobblestone + head) can't be broken or blown up, except by staff.
+  # Once the grave is emptied or has collapsed it is an ordinary block again.
+  protect-markers: true
+  # /nexusgrave retrieve opens your own nearest grave within this many blocks even if the marker
+  # block is gone (burned, griefed, replaced), so a broken marker never strands your items.
+  retrieve-radius: 8
